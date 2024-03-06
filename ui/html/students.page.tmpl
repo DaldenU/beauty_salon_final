@@ -1,0 +1,39 @@
+{{template "base" .}}
+
+{{define "title"}}{{end}}
+    {{define "main"}}
+        <h2>Student life</h2>
+        <p>Student life of Astana IT University provides students with opportunities to develop diverse talents and explore possibilities for new passions. To foster students’ interests, Astana IT University offers a variety of extracurricular activities, preparing them with critical knowledge, skills, and opportunities to be leaders in an increasingly complex world. Student Life helps students to get involved in many large-scale events.</p>
+        <br><img src="../static/img/labs.jpg" alt="aitu labs" width=50%>
+
+        <br><h3>Admission committee</h3>
+        <p>DSA is a structural unit of Astana IT University, which organizes and coordinates extra-curriculum activities at the university. DSA is committed to creating a favorable environment and conditions for students to develop leadership skills. Student engagement has core importance in DSA activities.</p>
+        <br><img src="../static/img/\library.jpg" alt="aitu library" width=50%>
+
+        <br><h3>Astana IT University Student Council</h3>
+        <p>AITU SC is the supreme body of the student self-governance system, providing a platform for the student body to positively impact the University. Student Council provides students an opportunity to acquire in-depth leadership experiences where it focuses primarily on improving student integration and the quality of campus life for students. Members of AITU SC are actively involved in the organization of student life events and inclusion of spiritual, moral and cultural values in campus life.</p>
+        <br><img src="../static/img/os.png" alt="aitu os" width=50%>
+        
+        <br><br><h2>Latest news for students</h2>
+        {{if .Snippets}}
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>News for</th>
+                    <th>Created</th>
+                    <th>ID</th>
+                </tr>
+                {{range .Snippets}}
+                    <tr>
+                        <td><a href='/snippet/{{.ID}}'>{{.Title}}</a></td>
+                        <!-- Use the new template function here -->
+                        <td>{{.Forr}}</td>
+                        <td>{{humanDate .Created}}</td>
+                        <td>#{{.ID}}</td>
+                    </tr>
+                {{end}}
+            </table>
+        {{else}}
+            <p>There's nothing to see here... yet!</p>
+    {{end}}
+{{end}}

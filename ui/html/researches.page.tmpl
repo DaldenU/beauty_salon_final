@@ -1,0 +1,37 @@
+{{template "base" .}}
+
+{{define "title"}}{{end}}
+    {{define "main"}}
+        <h2>Research activities</h2>
+        <img src="../static/img/research.jpg" alt="aitu research" width=100%> 
+
+        <p>Student life of Astana IT University provides students with opportunities to develop diverse talents and explore possibilities for new passions. To foster students’ interests, Astana IT University offers a variety of extracurricular activities, preparing them with critical knowledge, skills, and opportunities to be leaders in an increasingly complex world. Student Life helps students to get involved in many large-scale events.</p>
+
+        <br><h3>Development strategy of the University</h3>
+        <p>One of the priorities is to conduct research on grant funding programs, program-specific funding, foreign funds and funds of the European Union.</p>
+        <br><h3>Publications</h3>
+        <p>Publication activity is the most important criterion for evaluating the effectiveness of University scientists and reflects the level of development of the University’s science. The University is working to increase the publication activity of teachers in international rating journals with an impact factor based on the databases of Thomson Reuters, Scopus, if RSCI, etc.During the reporting period, the faculty of the University published 188 articles (table 1)</p>
+        
+        <br><br><h2>Latest news about researches</h2>
+        {{if .Snippets}}
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>News for</th>
+                    <th>Created</th>
+                    <th>ID</th>
+                </tr>
+                {{range .Snippets}}
+                    <tr>
+                        <td><a href='/snippet/{{.ID}}'>{{.Title}}</a></td>
+                        <!-- Use the new template function here -->
+                        <td>{{.Forr}}</td>
+                        <td>{{humanDate .Created}}</td>
+                        <td>#{{.ID}}</td>
+                    </tr>
+                {{end}}
+            </table>
+        {{else}}
+            <p>There's nothing to see here... yet!</p>
+    {{end}}
+{{end}}

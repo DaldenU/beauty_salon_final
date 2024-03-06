@@ -1,0 +1,39 @@
+{{template "base" .}}
+
+{{define "title"}}{{end}}
+    {{define "main"}}
+        <h2>Scientific Board</h2>
+        <p>The Scientific Board of the University is one of the forms of collegial management of a higher educational institution. The Scientific Board of the University is created by order of the rector of the University.</p>
+        <br><img src="../static/img/teacher1.jpg" alt="aitu teacher" width=50%>
+
+        <br><h3>Academic council</h3>
+        <p>Executive and decision-making body for the development of policies in the field of teaching, learning and other academic processes at the University.</p>
+        <br><img src="../static/img/\council.jpg" alt="aitu council" width=50%>
+
+        <br><h3>Scientific and Technical Council</h3>
+        <p>The Scientific and Technical Council is the highest expert advisory body of the university in the field of the formation of scientific, scientific, technical and innovative activities.</p>
+        <br><img src="../static/img/astanainnovations.jpg" alt="aitu astanainnovations " width=50%>
+        
+        <br><br><h2>Latest news for staff</h2>
+        {{if .Snippets}}
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>News for</th>
+                    <th>Created</th>
+                    <th>ID</th>
+                </tr>
+                {{range .Snippets}}
+                    <tr>
+                        <td><a href='/snippet/{{.ID}}'>{{.Title}}</a></td>
+                        <!-- Use the new template function here -->
+                        <td>{{.Forr}}</td>
+                        <td>{{humanDate .Created}}</td>
+                        <td>#{{.ID}}</td>
+                    </tr>
+                {{end}}
+            </table>
+        {{else}}
+            <p>There's nothing to see here... yet!</p>
+    {{end}}
+{{end}}

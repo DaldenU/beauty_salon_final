@@ -190,7 +190,7 @@ func (app *application) appointmentss(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) createAppointmentForm(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "create.page.tmpl", &templateData{
+	app.render(w, r, "createAppointment.page.tmpl", &templateData{
 		// Pass a new empty forms.Form object to the template.
 		Form: forms.New(nil),
 	})
@@ -205,34 +205,28 @@ func (app *application) createAppointment(w http.ResponseWriter, r *http.Request
 	}
 
 	form := forms.New(r.PostForm)
-	form.Required("title", "content", "master", "price")
-	form.MaxLength("title", 100)
-	form.MaxLength("master", 100)
-	//form.PermittedValues("expires", "365", "7", "1")
+	form.Required("service_id", "time")
 
 	if !form.Valid() {
-		app.render(w, r, "create.page.tmpl", &templateData{Form: form})
+		app.render(w, r, "createAppointment.page.tmpl", &templateData{Form: form})
 		return
 	}
 
-	i, err1 := strconv.Atoi(form.Get("price"))
-	if err1 != nil {
-		return
-	}
+	user_id := app.session.GetInt(r, "authenticatedUserID")
 
-	id, err := app.services.Insert(form.Get("title"), form.Get("content"), form.Get("master"), i)
+	id, err := app.appointments.Insert(user_id, form.Get("service_id"), form.Get("time"))
 	if err != nil && id == 0 {
 		app.serverError(w, err)
 		return
 	}
-	app.session.Put(r, "flash", "Service successfully created!")
+	app.session.Put(r, "flash", "Good!")
 
-	http.Redirect(w, r, "/services", http.StatusSeeOther)
+	http.Redirect(w, r, "/appointments", http.StatusSeeOther)
 
 }
 
 func (app *application) updateAppointmentForm(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "update.page.tmpl", &templateData{
+	app.render(w, r, "updateAppointment.page.tmpl", &templateData{
 		// Pass a new empty forms.Form object to the template.
 		Form: forms.New(nil),
 	})
@@ -250,28 +244,28 @@ func (app *application) updateAppointment(w http.ResponseWriter, r *http.Request
 	form.Required("title", "price")
 
 	if !form.Valid() {
-		app.render(w, r, "update.page.tmpl", &templateData{Form: form})
+		app.render(w, r, "updateAppointment.page.tmpl", &templateData{Form: form})
 		return
 	}
 
-	i, err1 := strconv.Atoi(form.Get("price"))
+	i, err1 := strconv.Atoi(form.Get("appointment_id"))
 	if err1 != nil {
 		return
 	}
 
-	err = app.services.Update(form.Get("title"), i)
+	err = app.appointments.Update(i, form.Get("time"))
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	app.session.Put(r, "flash", "Service successfully updated!")
+	app.session.Put(r, "flash", "Appointment successfully updated!")
 
-	http.Redirect(w, r, "/services", http.StatusSeeOther)
+	http.Redirect(w, r, "/appointments", http.StatusSeeOther)
 
 }
 
 func (app *application) deleteAppointmentForm(w http.ResponseWriter, r *http.Request) {
-	app.render(w, r, "delete.page.tmpl", &templateData{
+	app.render(w, r, "deleteAppointment.page.tmpl", &templateData{
 		// Pass a new empty forms.Form object to the template.
 		Form: forms.New(nil),
 	})
@@ -289,7 +283,7 @@ func (app *application) deleteAppointment(w http.ResponseWriter, r *http.Request
 	form.Required("title")
 
 	if !form.Valid() {
-		app.render(w, r, "delete.page.tmpl", &templateData{Form: form})
+		app.render(w, r, "deleteAppointment.page.tmpl", &templateData{Form: form})
 		return
 	}
 
@@ -300,7 +294,7 @@ func (app *application) deleteAppointment(w http.ResponseWriter, r *http.Request
 	}
 	app.session.Put(r, "flash", "Service successfully deleted!")
 
-	http.Redirect(w, r, "/services", http.StatusSeeOther)
+	http.Redirect(w, r, "/appointments", http.StatusSeeOther)
 
 }
 
@@ -400,7 +394,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	// Check whether the credentials are valid. If they're not, add a generic error
 	// message to the form failures map and re-display the login page.
 	form := forms.New(r.PostForm)
-	id, err := app.users.Authenticate(form.Get("email"), form.Get("password"))
+	id, role, err := app.users.Authenticate(form.Get("email"), form.Get("password"))
 	if err != nil {
 		if errors.Is(err, models.ErrInvalidCredentials) {
 			form.Errors.Add("generic", "Email or Password is incorrect")
@@ -413,8 +407,9 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	// Add the ID of the current user to the session, so that they are now 'logged
 	// in'.
 	app.session.Put(r, "authenticatedUserID", id)
+	app.session.Put(r, "authenticatedUserRole", role)
 	// Redirect the user to the create snippet page.
-	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {

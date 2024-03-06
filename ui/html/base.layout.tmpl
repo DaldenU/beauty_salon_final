@@ -12,6 +12,49 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+<style>
+.dropbtn {
+  //background-color: #white;
+  color: black;
+  padding: 0 18px 18px 0;
+  //font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+    width: 100%
+  z-index: 1;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: 100%
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  //padding: 12px 16px;
+  //text-decoration: none;
+  display: block;
+    width: 100%
+  z-index: 1;
+
+
+}
+
+.dropdown-content a:hover {background-color: #ddd;   width: 100%;  z-index: 1;}
+
+.dropdown:hover .dropdown-content {display: block;   width: 100%; z-index: 1;}
+
+.dropdown:hover .dropbtn {background-color: #caa6a6;   width: 100%; z-index: 1;}
+</style>
+
 </head>
 
 <body>
@@ -23,12 +66,49 @@
 </div>
 </header>
 
-<nav>
+<nav >
+<div align="left" style="width:70%">
 <a href='/'>Home</a>
-<a href='/services'>Services</a>
+
+<div class="dropdown" style="width:auto">
+  <button class="dropbtn">Appointments</button>
+  <div class="dropdown-content">
+    <a href='/appointments/create'>Create appointment</a>
+    {{if .IsAuthenticated}}
+        <a href='/appointments'>Appointments list</a>
+        <a href='/appointments/update'>Update appointments</a>
+        <a href='/appointments/delete'>Delete appointments</a>
+    {{end}}
+  </div>
+</div>
+<div class="dropdown" style="width:auto">
+  <button class="dropbtn">Services</button>
+  <div class="dropdown-content">
+    <a href='/services'>Services</a>
+    {{if .IsAuthenticated}}
+        <a href='/services/create'>Add services list</a>
+        <a href='/services/update'>Update services</a>
+        <a href='/services/delete'>Delete services</a>
+    {{end}}
+  </div>
+</div>
+
 <a href='/products'>Products</a>
 <a href='/reviews'>Reviews</a>
 <a href='/about'>About Us</a>
+</div>
+<div align="right" style="width:30%">
+    {{if .IsAuthenticated}}
+        <form action='/user/logout' method='POST'>
+            <!-- Include the CSRF token -->
+            <input type='hidden' name='csrf_token' value='{{.CSRFToken}}'>
+            <button>Logout</button>
+        </form>
+    {{else}}
+        <a href='/user/signup'>Signup</a>
+        <a href='/user/login'>Login</a>
+    {{end}}
+</div>
 </nav>
 
 <main>

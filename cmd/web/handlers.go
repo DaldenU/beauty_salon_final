@@ -189,6 +189,121 @@ func (app *application) appointmentss(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (app *application) createAppointmentForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "create.page.tmpl", &templateData{
+		// Pass a new empty forms.Form object to the template.
+		Form: forms.New(nil),
+	})
+}
+
+func (app *application) createAppointment(w http.ResponseWriter, r *http.Request) {
+
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("title", "content", "master", "price")
+	form.MaxLength("title", 100)
+	form.MaxLength("master", 100)
+	//form.PermittedValues("expires", "365", "7", "1")
+
+	if !form.Valid() {
+		app.render(w, r, "create.page.tmpl", &templateData{Form: form})
+		return
+	}
+
+	i, err1 := strconv.Atoi(form.Get("price"))
+	if err1 != nil {
+		return
+	}
+
+	id, err := app.services.Insert(form.Get("title"), form.Get("content"), form.Get("master"), i)
+	if err != nil && id == 0 {
+		app.serverError(w, err)
+		return
+	}
+	app.session.Put(r, "flash", "Service successfully created!")
+
+	http.Redirect(w, r, "/services", http.StatusSeeOther)
+
+}
+
+func (app *application) updateAppointmentForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "update.page.tmpl", &templateData{
+		// Pass a new empty forms.Form object to the template.
+		Form: forms.New(nil),
+	})
+}
+
+func (app *application) updateAppointment(w http.ResponseWriter, r *http.Request) {
+
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("title", "price")
+
+	if !form.Valid() {
+		app.render(w, r, "update.page.tmpl", &templateData{Form: form})
+		return
+	}
+
+	i, err1 := strconv.Atoi(form.Get("price"))
+	if err1 != nil {
+		return
+	}
+
+	err = app.services.Update(form.Get("title"), i)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.session.Put(r, "flash", "Service successfully updated!")
+
+	http.Redirect(w, r, "/services", http.StatusSeeOther)
+
+}
+
+func (app *application) deleteAppointmentForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "delete.page.tmpl", &templateData{
+		// Pass a new empty forms.Form object to the template.
+		Form: forms.New(nil),
+	})
+}
+
+func (app *application) deleteAppointment(w http.ResponseWriter, r *http.Request) {
+
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("title")
+
+	if !form.Valid() {
+		app.render(w, r, "delete.page.tmpl", &templateData{Form: form})
+		return
+	}
+
+	err = app.services.Delete(form.Get("title"))
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	app.session.Put(r, "flash", "Service successfully deleted!")
+
+	http.Redirect(w, r, "/services", http.StatusSeeOther)
+
+}
+
 func (app *application) products(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path != "/products" {
 		app.notFound(w)

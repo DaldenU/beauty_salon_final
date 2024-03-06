@@ -44,34 +44,34 @@ func (m *UserModel) Insert(full_name, email, phone, password, role string) error
 	return nil
 }
 
-func (m *UserModel) Authenticate(email, password string) (int, error) {
+func (m *UserModel) Authenticate(email, password string) (int, string, error) {
 	// Retrieve the id and hashed password associated with the given email. If no
 	// matching email exists, or the user is not active, we return the
 	// ErrInvalidCredentials error.
 	var id int
+	var role string
 	var hashedPassword []byte
-	stmt := "SELECT id, hashed_password FROM users WHERE email = ? AND active = TRUE"
+	stmt := "SELECT id, role, hashed_password FROM users WHERE email = ? AND active = TRUE"
 	row := m.DB.QueryRow(stmt, email)
-	err := row.Scan(&id, &hashedPassword)
+	err := row.Scan(&id, &role, &hashedPassword)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return 0, models.ErrInvalidCredentials
+			return 0, "", models.ErrInvalidCredentials
 		} else {
-			return 0, err
+			return 0, "", err
 		}
 	}
-	// Check whether the hashed password and plain-text password provided match.
-	// If they don't, we return the ErrInvalidCredentials error.
+
 	err = bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
 	if err != nil {
 		if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
-			return 0, models.ErrInvalidCredentials
+			return 0, "", models.ErrInvalidCredentials
 		} else {
-			return 0, err
+			return 0, "", err
 		}
 	}
 	// Otherwise, the password is correct. Return the user ID.
-	return id, nil
+	return id, role, nil
 }
 
 // We'll use the Get method to fetch details for a specific user based

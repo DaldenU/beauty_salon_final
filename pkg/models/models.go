@@ -35,7 +35,7 @@ type Service struct {
 type Appointment struct {
 	ID         int
 	User_id    int
-	Service_id int
+	Service_id string
 	Time       string
 }
 

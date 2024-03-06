@@ -11,7 +11,7 @@ type AppointmentModel struct {
 	DB *sql.DB
 }
 
-func (m *AppointmentModel) Insert(user_id, service_id, time string) (int, error) {
+func (m *AppointmentModel) Insert(user_id int, service_id, time string) (int, error) {
 	stmt := `INSERT INTO appointments (user_id, service_id, time) VALUES(?, ?, ?)`
 	result, err := m.DB.Exec(stmt, user_id, service_id, time)
 	if err != nil {

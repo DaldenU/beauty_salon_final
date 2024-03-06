@@ -1,0 +1,26 @@
+{{template "base" .}}
+
+{{define "title"}}{{end}}
+    {{define "main"}}
+        <h2>Appointments list</h2>
+        {{if .Appointments}}
+            <table>
+                <tr>
+                    <th>User_id</th>
+                    <th>Service_id</th>
+                    <th>Time</th>
+                    <th>ID</th>
+                </tr>
+                {{range .Appointments}}
+                    <tr>
+                        <td>{{.User_id}}</td>
+                        <td>{{.Service_id}}</td>
+                        <td>{{.Time}}</td>
+                        <td>#{{.ID}}</td>
+                    </tr>
+                {{end}}
+            </table>
+        {{else}}
+            <p>There's nothing to see here... yet!</p>
+    {{end}}
+{{end}}

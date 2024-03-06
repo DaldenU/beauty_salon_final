@@ -1,0 +1,41 @@
+{{template "base" .}}
+
+{{define "title"}}{{end}}
+    {{define "main"}}
+        <h2>Admission process</h2>
+        <p>Student life of Astana IT University provides students with opportunities to develop diverse talents and explore possibilities for new passions. To foster students’ interests, Astana IT University offers a variety of extracurricular activities, preparing them with critical knowledge, skills, and opportunities to be leaders in an increasingly complex world. Student Life helps students to get involved in many large-scale events.</p>
+
+        <br><h3>Passing the AITU Excellence Test entrance Exam</h3>
+        <p>Register on this website to take the test.</p>
+        <br><h3>Registration on the admissions portal</h3>
+        <p>Abitur</p>
+        <br><h3>Collect the necessary documents</h3>
+        <br><h3>Submit documents</h3>
+        <p>It is necessary to submit all the prepared documents. Address: Astana, Mangilik El Avenue, 55/11.</p>
+
+        <br><img src="../static/img/Final.jpg" alt="Final" width=100%>
+
+        
+        <br><br><h2>Latest news for the applicants</h2>
+        {{if .Snippets}}
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>News for</th>
+                    <th>Created</th>
+                    <th>ID</th>
+                </tr>
+                {{range .Snippets}}
+                    <tr>
+                        <td><a href='/snippet/{{.ID}}'>{{.Title}}</a></td>
+                        <!-- Use the new template function here -->
+                        <td>{{.Forr}}</td>
+                        <td>{{humanDate .Created}}</td>
+                        <td>#{{.ID}}</td>
+                    </tr>
+                {{end}}
+            </table>
+        {{else}}
+            <p>There's nothing to see here... yet!</p>
+    {{end}}
+{{end}}

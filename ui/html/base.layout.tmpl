@@ -15,39 +15,44 @@
 
 <style>
 .dropbtn {
-  background-color: #04AA6D;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
+  //background-color: #white;
+  color: black;
+  padding: 0 18px 18px 0;
+  //font-size: 16px;
   border: none;
 }
 
 .dropdown {
   position: relative;
   display: inline-block;
+    width: 100%
+  z-index: 1;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #f1f1f1;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  width: 100%
   z-index: 1;
 }
 
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
-  text-decoration: none;
+  //padding: 12px 16px;
+  //text-decoration: none;
   display: block;
+    width: 100%
+  z-index: 1;
+
+
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
+.dropdown-content a:hover {background-color: #ddd;   width: 100%;  z-index: 1;}
 
-.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropdown-content {display: block;   width: 100%; z-index: 1;}
 
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown:hover .dropbtn {background-color: #caa6a6;   width: 100%; z-index: 1;}
 </style>
 
 </head>
@@ -64,20 +69,30 @@
 <nav >
 <div align="left" style="width:70%">
 <a href='/'>Home</a>
-<a href='/services'>Services</a>
 
-<div class="dropdown">
-  <button class="dropbtn">Dropdown</button>
+<div class="dropdown" style="width:auto">
+  <button class="dropbtn">Appointments</button>
   <div class="dropdown-content">
-    <a href='/appointments/create'>Appointments</a>
+    <a href='/appointments/create'>Create appointment</a>
     {{if .IsAuthenticated}}
-        <a href='/appointments'>Appointments</a>
-        <a href='/appointments/update'>Appointments</a>
-        <a href='/appointments/delete'>Appointments</a>
+        <a href='/appointments'>Appointments list</a>
+        <a href='/appointments/update'>Update appointments</a>
+        <a href='/appointments/delete'>Delete appointments</a>
     {{end}}
   </div>
 </div>
-isAdmin
+<div class="dropdown" style="width:auto">
+  <button class="dropbtn">Services</button>
+  <div class="dropdown-content">
+    <a href='/services'>Services</a>
+    {{if .IsAuthenticated}}
+        <a href='/services/create'>Add services list</a>
+        <a href='/services/update'>Update services</a>
+        <a href='/services/delete'>Delete services</a>
+    {{end}}
+  </div>
+</div>
+
 <a href='/products'>Products</a>
 <a href='/reviews'>Reviews</a>
 <a href='/about'>About Us</a>

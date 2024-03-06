@@ -248,17 +248,17 @@ func (app *application) updateAppointment(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	i, err1 := strconv.Atoi(form.Get("price"))
+	i, err1 := strconv.Atoi(form.Get("appointment_id"))
 	if err1 != nil {
 		return
 	}
 
-	err = app.services.Update(form.Get("title"), i)
+	err = app.appointments.Update(i, form.Get("time"))
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	app.session.Put(r, "flash", "Service successfully updated!")
+	app.session.Put(r, "flash", "Appointment successfully updated!")
 
 	http.Redirect(w, r, "/appointments", http.StatusSeeOther)
 
@@ -409,7 +409,7 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	app.session.Put(r, "authenticatedUserID", id)
 	app.session.Put(r, "authenticatedUserRole", role)
 	// Redirect the user to the create snippet page.
-	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {

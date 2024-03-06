@@ -23,6 +23,8 @@ git clone https://github.com/DaldenU/beauty_salon_final.git
 
 <p>2. Initialize a MySql database locally and configure the connection in main.go</p>
 
+https://github.com/DaldenU/beauty_salon_final/blob/8b67d61aa6b5dd491a6c4eb832d258a5c516037c/cmd/web/main.go#L30
+
 <p>3. Run the web-app</p>
 
 ```

@@ -32,6 +32,13 @@ type Service struct {
 	Price   int
 }
 
+type Appointment struct {
+	ID         int
+	User_id    int
+	Service_id int
+	Time       string
+}
+
 type User struct {
 	ID             int
 	Name           string

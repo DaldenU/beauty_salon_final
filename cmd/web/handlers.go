@@ -174,18 +174,18 @@ func (app *application) servicess(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (app *application) applicants(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/applicants" {
+func (app *application) appointmentss(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/appointments" {
 		app.notFound(w)
 		return
 	}
-	s, err := app.snippets.Latest("applicants")
+	s, err := app.appointments.Latest("appointments")
 	if err != nil {
 		app.serverError(w, err)
 		return
 	}
-	app.render(w, r, "applicants.page.tmpl", &templateData{
-		Snippets: s,
+	app.render(w, r, "appointments.page.tmpl", &templateData{
+		Appointments: s,
 	})
 }
 
@@ -247,7 +247,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	form := forms.New(r.PostForm)
-	form.Required("full_name", "email", "password", "phone")
+	form.Required("full_name", "email", "password", "phone", "role")
 	form.MaxLength("full_name", 255)
 	form.MaxLength("email", 255)
 	form.MatchesPattern("email", forms.EmailRX)
@@ -256,7 +256,7 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 		app.render(w, r, "signup.page.tmpl", &templateData{Form: form})
 		return
 	}
-	err = app.users.Insert(form.Get("full_name"), form.Get("email"), form.Get("phone"), form.Get("password"))
+	err = app.users.Insert(form.Get("full_name"), form.Get("email"), form.Get("phone"), form.Get("password"), form.Get("role"))
 	if err != nil {
 		if errors.Is(err, models.ErrDuplicateEmail) {
 			form.Errors.Add("email", "Address is already in use")

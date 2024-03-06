@@ -19,6 +19,8 @@ type templateData struct {
 	Snippets        []*models.Snippet
 	Service         *models.Service
 	Services        []*models.Service
+	Appointment     *models.Appointment
+	Appointments    []*models.Appointment
 }
 
 func humanDate(t time.Time) string {

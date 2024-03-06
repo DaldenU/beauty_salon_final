@@ -9,9 +9,15 @@
 Here're some of the project's best features:
 
 *   Dynamic service list
+*   https://github.com/DaldenU/beauty_salon_final/blob/6db8776c54fd5c8a84fc4c3fa6992e4cf8c681a3/cmd/web/handlers.go#L14-L150
 *   Dynamic product list
+*   https://github.com/DaldenU/beauty_salon_final/blob/6db8776c54fd5c8a84fc4c3fa6992e4cf8c681a3/cmd/web/handlers.go#L307-L321
+*   Appointment system
+*   https://github.com/DaldenU/beauty_salon_final/blob/6db8776c54fd5c8a84fc4c3fa6992e4cf8c681a3/cmd/web/handlers.go#L177-L306
 *   Sing up and Log in
+*   https://github.com/DaldenU/beauty_salon_final/blob/6db8776c54fd5c8a84fc4c3fa6992e4cf8c681a3/cmd/web/handlers.go#L352-L429
 *   Customer Review page
+*   https://github.com/DaldenU/beauty_salon_final/blob/6db8776c54fd5c8a84fc4c3fa6992e4cf8c681a3/cmd/web/handlers.go#L322-L336
 
 <h2>🛠️ Installation Steps:</h2>
 

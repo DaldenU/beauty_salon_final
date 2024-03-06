@@ -22,6 +22,7 @@ type application struct {
 	session       *sessions.Session
 	snippets      *mysql.SnippetModel
 	services      *mysql.ServiceModel
+	appointments  *mysql.AppointmentModel
 	templateCache map[string]*template.Template
 	users         *mysql.UserModel
 }
@@ -53,6 +54,7 @@ func main() {
 		session:       session,
 		snippets:      &mysql.SnippetModel{DB: db},
 		services:      &mysql.ServiceModel{DB: db},
+		appointments:  &mysql.AppointmentModel{DB: db},
 		templateCache: templateCache,
 		users:         &mysql.UserModel{DB: db},
 	}

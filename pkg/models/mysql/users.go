@@ -14,18 +14,18 @@ type UserModel struct {
 	DB *sql.DB
 }
 
-func (m *UserModel) Insert(full_name, email, password, role string) error {
+func (m *UserModel) Insert(full_name, email, phone, password, role string) error {
 	// Create a bcrypt hash of the plain-text password.
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), 12)
 	if err != nil {
 		return err
 	}
-	stmt := `INSERT INTO users (full_name, email, phone, hashed_password, role, created)
-	VALUES(?, ?, ?, ?, "client", UTC_TIMESTAMP())`
+	stmt := `INSERT INTO users (full_name, email, phone, hashed_password, created, role)
+	VALUES(?, ?, ?, ?, UTC_TIMESTAMP(), ?)`
 
 	// Use the Exec() method to insert the user details and hashed password
 	// into the users table.
-	_, err = m.DB.Exec(stmt, full_name, email, string(hashedPassword), role)
+	_, err = m.DB.Exec(stmt, full_name, email, phone, string(hashedPassword), role)
 	if err != nil {
 		// If this returns an error, we use the errors.As() function to check
 		// whether the error has the type *mysql.MySQLError. If it does, the

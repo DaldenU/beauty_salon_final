@@ -18,14 +18,12 @@ func (app *application) routes() http.Handler {
 	mux.Get("/products", dynamicMiddleware.ThenFunc(app.products))
 	mux.Get("/reviews", dynamicMiddleware.ThenFunc(app.reviews))
 	mux.Get("/about", dynamicMiddleware.ThenFunc(app.about))
-	mux.Get("/applicants", dynamicMiddleware.ThenFunc(app.applicants))
 
-	// CREATE TABLE services (
-	// 	id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	// 	title VARCHAR(100) NOT NULL,
-	// 	content TEXT NOT NULL,
-	// 	master VARCHAR(100) NOT NULL,
-	// 	price int
+	//	CREATE TABLE appointments (
+	//	id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	// 	user_id int NOT NULL,
+	// 	service_id int NOT NULL,
+	// 	time DATETIME NOT NULL
 	// 	);
 
 	mux.Get("/", dynamicMiddleware.ThenFunc(app.home))
@@ -37,6 +35,14 @@ func (app *application) routes() http.Handler {
 	mux.Get("/services/delete", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.deleteServiceForm))
 	mux.Post("/services/delete", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.deleteService))
 	mux.Get("/services/:id", dynamicMiddleware.ThenFunc(app.showService))
+
+	mux.Get("/appointments", dynamicMiddleware.ThenFunc(app.appointmentss))
+	mux.Get("/appointments/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createAppointmentForm))
+	mux.Post("/appointments/create", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.createAppointment))
+	mux.Get("/appointments/update", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.updateAppointmentForm))
+	mux.Post("/appointments/update", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.updateAppointment))
+	mux.Get("/appointments/delete", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.deleteAppointmentForm))
+	mux.Post("/appointments/delete", dynamicMiddleware.Append(app.requireAuthentication).ThenFunc(app.deleteAppointment))
 
 	mux.Get("/user/signup", dynamicMiddleware.ThenFunc(app.signupUserForm))
 	mux.Post("/user/signup", dynamicMiddleware.ThenFunc(app.signupUser))
